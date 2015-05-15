@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe RgFactory do
   before(:all) do
     @a = described_class.new(:h, :g)
@@ -10,7 +9,6 @@ describe RgFactory do
     it { expect(@a).to be_kind_of(Class) }
   end
   context '#new' do
-    
     it { expect(subject).to have_attributes(:h => 2, :g => 3) }
     it { expect(subject).to respond_to(:h=, :g=) }
   end
@@ -55,17 +53,21 @@ describe RgFactory do
   end
   
   context '#each' do
-    let(:each_block) { subject.each { |x| x * 2 } }
-    it 'should get each value of this class in order' do
-      expect(subject.each.to_a).to eq([2, 3])
-    end
-    xit 'should evaluate block if block is given' do
-      expect(each_block).to eq([4, 6])
+    it { expect(subject).to respond_to(:each) }
+    context 'should evaluate block once for each variable' do
+      b = []
+      let!(:each_spc) {subject.each { |x| b.push x*2 }}
+      it { expect(b).to eq([4, 6]) }
     end
   end
   
   context '#each_pair' do
-    xit
+    it { expect(subject).to respond_to(:each_pair) }
+    context 'should calls block once for each instance variable, passing the name and the value as parameters' do
+      def1 = []
+      let!(:each_pair_spc) { subject.each_pair {|sym, val| def1.push([sym, val])} }
+      it { expect(def1).to eq([[:h, 2], [:g, 3]]) }
+    end 
   end
   
   context '#eql?' do
@@ -97,7 +99,10 @@ describe RgFactory do
   end
   
   context '#select' do
-    xit
+    it { expect(subject).to respond_to(:select) }
+    it 'should return array of values for which block return true' do
+      expect(subject.select {|v| (v % 3).zero? } ).to eq([3])
+    end
   end
   
   context '#size' do
