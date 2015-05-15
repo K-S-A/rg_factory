@@ -1,12 +1,12 @@
 require "rg_factory/version"
 
 class RgFactory
-  def self.new(*atts)
+  def self.new(*atrs)
     Class.new do
-      atts.each { |att| attr_accessor att }
+      atrs.each { |atr| attr_accessor atr }
       define_method :initialize do |*params|
         params.each_with_index do |param, index|
-          instance_variable_set("@#{atts[index]}", param)
+          instance_variable_set("@#{atrs[index]}", param)
         end
       end
       
@@ -56,6 +56,10 @@ class RgFactory
       
       def values_at(*values)
         values.map { |val| instance_variable_get(instance_variables[val]) }
+      end
+      
+      def to_h
+        members.each_with_object({}) { |var, hsh| hsh[var] = instance_variable_get("@#{var}") }
       end
     
       end

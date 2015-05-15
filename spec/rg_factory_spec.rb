@@ -31,13 +31,13 @@ describe RgFactory do
 
   context '#[]' do
     it { expect(subject).to respond_to(:[]) }
-    it 'should get variable with by index' do
+    it 'should get variable by index' do
       expect(subject[1]).to eq(3)
     end
-    it 'should get variable with attribute as symbol' do
+    it 'should get variable by attribute as symbol' do
       expect(subject[:h]).to eq(2)
     end
-    it 'should get variable with attribute as string' do
+    it 'should get variable by attribute as string' do
       expect(subject["g"]).to eq(3)
     end
   end
@@ -115,7 +115,10 @@ describe RgFactory do
   end
  
   context '#to_h' do
-    xit
+    it { expect(subject).to respond_to(:to_h) }
+    it 'should return hash of object\'s variables names and values' do
+      expect(subject.to_h).to eq( { :h => 2, :g => 3 } )
+    end
   end
   
   context '#to_s' do
