@@ -1,3 +1,3 @@
-module RgFactory
+class RgFactory
   VERSION = "0.1.0"
 end
