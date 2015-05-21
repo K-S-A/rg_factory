@@ -41,32 +41,32 @@ describe RgFactory do
   end
   
   context '#[]=' do
-  let!(:set_value) { subject[1] = 5 }
-  let!(:set_value1) { subject[0] = 7 }
     it { expect(subject).to respond_to(:[]=) }
     it 'should set variable by index' do
+      subject[1] = 5
       expect(subject[1]).to eq(5)
     end
     it 'should set variable by symbol' do
-      expect(subject[0]).to eq(7)
+      subject[:h] = 7
+      expect(subject[:h]).to eq(7)
     end
   end
   
   context '#each' do
     it { expect(subject).to respond_to(:each) }
-    context 'should evaluate block once for each variable' do
-      b = []
-      let!(:each_spc) {subject.each { |x| b.push x*2 }}
-      it { expect(b).to eq([4, 6]) }
+    it 'should evaluate block once for each variable' do
+      tmp = []
+      subject.each { |x| tmp.push x*2 }
+      expect(tmp).to eq([4, 6])
     end
   end
   
   context '#each_pair' do
     it { expect(subject).to respond_to(:each_pair) }
-    context 'should calls block once for each instance variable, passing the name and the value as parameters' do
-      def1 = []
-      let!(:each_pair_spc) { subject.each_pair {|sym, val| def1.push([sym, val])} }
-      it { expect(def1).to eq([[:h, 2], [:g, 3]]) }
+    it 'should calls block once for each instance variable, passing the name and the value as parameters' do
+      tmp = []
+      subject.each_pair {|sym, val| tmp.push([sym, val])}
+      expect(tmp).to eq([[:h, 2], [:g, 3]])
     end 
   end
   
