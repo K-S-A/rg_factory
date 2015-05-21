@@ -2,15 +2,16 @@ require "rg_factory/version"
 
 module RgFactory
   class Factory
-    def self.new(*atrs)
-      Class.new do
+    def self.new(name, *atrs)
+      name.is_a?(String) ? class_name = name : atrs.unshift(name)
+      klass = Class.new do
       atrs.each { |atr| attr_accessor atr }
       define_method :initialize do |*params|
         params.each_with_index do |param, index|
           instance_variable_set("@#{atrs[index]}", param)
         end
       end
-      
+
       def inspect
         "#{self.class.superclass.name} #{self.class.name} #{self.instance_variables.map{ |var| "#{var}=#{instance_variable_get(var)}" }.join(", ") }"
       end
@@ -70,6 +71,8 @@ module RgFactory
       alias :to_a :values
     
       end
+    self.const_set(class_name, klass) if class_name
+    klass
     end
   end
 end
