@@ -2,7 +2,7 @@ require "rg_factory/version"
 
 module RgFactory
   class Factory
-    def self.new(name, *atrs)
+    def self.new(name, *atrs, &block)
       name.is_a?(String) ? class_name = name : atrs.unshift(name)
       klass = Class.new do
       atrs.each { |atr| attr_accessor atr }
@@ -69,6 +69,8 @@ module RgFactory
       alias :to_s :inspect
       alias :size :length
       alias :to_a :values
+      
+      self.class_eval(&block) if block_given?
     
       end
     self.const_set(class_name, klass) if class_name

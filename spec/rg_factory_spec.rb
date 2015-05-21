@@ -3,7 +3,7 @@ require 'spec_helper'
 module RgFactory
   describe Factory do
     before(:all) do
-      @a = described_class.new(:h, :g)
+      @a = described_class.new(:h, :g) {def some_method; "some method"; end}
     end
     subject { @a.new(2, 3) }
     
@@ -128,7 +128,11 @@ module RgFactory
       it { expect(subject).to respond_to(:values_at) }
       it 'should return selected values as an Array' do
         expect(subject.values_at(1, 0)).to eq([3, 2])
-      end 
+      end
+      
+      context 'should evaluate methods that given in block' do
+        it { expect(subject).to respond_to(:some_method) }
+      end
     end
   end   
 end
