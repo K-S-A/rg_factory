@@ -21,25 +21,23 @@ module RgFactory
       end
     
       def [](var)
-        var_name = var.is_a?(Fixnum) ? instance_variables[var.to_i] : "@#{var.to_s}"
-        instance_variable_get(var_name)
+        instance_variable_get(var.is_a?(Fixnum) ? instance_variables[var.to_i] : "@#{var.to_s}")
       end
       
       def []=(var, value)
-        var_name = var.is_a?(Fixnum) ? instance_variables[var.to_i] : "@#{var.to_s}"
-        instance_variable_set(var_name, value)
+        instance_variable_set(var.is_a?(Fixnum) ? instance_variables[var.to_i] : "@#{var.to_s}", value)
       end
       
       def each(&block)  
-        values.each   
-        values.each &block if block_given?
-        self
+        if block_given? then values.each &block
+        else values.each
+        end
       end
       
       def each_pair(&block)
-        to_h.each_pair
-        to_h.each_pair &block if block_given?
-        self
+        if block_given? then to_h.each_pair &block 
+        else to_h.each_pair
+        end
       end
       
       def members
@@ -69,7 +67,7 @@ module RgFactory
       alias :to_s :inspect
       alias :size :length
       alias :to_a :values
-      
+            
       self.class_eval(&block) if block_given?
     
       end
