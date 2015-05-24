@@ -30,13 +30,13 @@ module RgFactory
       
       def each(&block)  
         if block_given? then values.each &block
-        else values.each
+        else                 values.each
         end
       end
       
       def each_pair(&block)
         if block_given? then to_h.each_pair &block 
-        else to_h.each_pair
+        else                 to_h.each_pair
         end
       end
       
